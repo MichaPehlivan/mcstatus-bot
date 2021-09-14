@@ -11,7 +11,8 @@ import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.Message;
+import discord4j.core.spec.EmbedCreateSpec;
+import discord4j.rest.util.Color;
 
 public class BotMain {
     
@@ -31,14 +32,20 @@ public class BotMain {
         input = new BufferedReader(new InputStreamReader(client.getInputStream()));
         output = new DataOutputStream(client.getOutputStream());
 
-        gateway.getEventDispatcher().on(ReadyEvent.class)
+        gateway.on(ReadyEvent.class)
             .subscribe(event -> System.out.println("bot ready"));
 
-        gateway.getEventDispatcher().on(MessageCreateEvent.class)
+        gateway.on(MessageCreateEvent.class)
             .map(MessageCreateEvent::getMessage)
             .filter(message -> message.getContent().equalsIgnoreCase(".online"))
-            .flatMap(Message::getChannel)
-            .flatMap(channel -> channel.createMessage("there are " + getData(0) + "/" + getData(1) + " players online on " + getData(2)))
+            .flatMap(message -> message.getChannel())
+            .flatMap(channel -> channel.createMessage(EmbedCreateSpec.builder()
+                .color(Color.RED)
+                .title("status of " + getData(2))
+                .addField("players online:", getData(0) + '/' + getData(1), true)   
+                .addField("version: ", getData(3), true)
+                .addField("ping: ", getData(4) + " ms", false)
+                .build()))
             .subscribe();
     
         gateway.onDisconnect().block();
