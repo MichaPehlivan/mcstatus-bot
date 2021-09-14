@@ -42,9 +42,11 @@ public class BotMain {
             .flatMap(channel -> channel.createMessage(EmbedCreateSpec.builder()
                 .color(Color.RED)
                 .title("status of " + getData(2))
-                .addField("players online:", getData(0) + '/' + getData(1), true)   
                 .addField("version: ", getData(3), true)
-                .addField("ping: ", getData(4) + " ms", false)
+                .addField("ping: ", getData(4) + " ms", true)
+                .addField("players online:", getData(0) + '/' + getData(1) + "\n\n"
+                     + getData(5).substring(2, 9) 
+                     + "\n" + getData(5).substring(13, 20), false)
                 .build()))
             .subscribe();
     
