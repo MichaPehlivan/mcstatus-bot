@@ -26,6 +26,7 @@ public class BotMain {
         final GatewayDiscordClient gateway = discordclient.login().block();
 
         serversocket = new ServerSocket(6000);
+        Runtime.getRuntime().exec("python mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\McStatus.py");
         client = serversocket.accept();
         System.out.println("client connected");
 
