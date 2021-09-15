@@ -15,6 +15,7 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
+import michapehlivan.mcstatusbot.util.DataCode;
 
 public class BotMain {
     
@@ -62,15 +63,15 @@ public class BotMain {
         Random random = new Random();
         Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
         
-        if(Boolean.parseBoolean(getData(0))){
+        if(Boolean.parseBoolean(getData(DataCode.ONLINE))){
             EmbedCreateSpec embed = EmbedCreateSpec.builder()
                 .color(color)
-                .title("status of " + getData(3))
-                .addField("version: ", getData(4), true)
-                .addField("ping: ", getData(5) + " ms", true)
-                .addField("players online:", getData(1) + '/' + getData(2) + "\n\n"
-                    + getData(6).substring(2, 9) 
-                    + "\n" + getData(6).substring(13, 20), false)
+                .title("status of " + getData(DataCode.NAME))
+                .addField("version: ", getData(DataCode.VERSION), true)
+                .addField("ping: ", getData(DataCode.PING) + " ms", true)
+                .addField("players online:", getData(DataCode.ONLINE) + '/' + getData(DataCode.MAX) + "\n\n"
+                    + getData(DataCode.PLAYERS).substring(2, 9) 
+                    + "\n" + getData(DataCode.PLAYERS).substring(13, 20), false)
                 .build();
             return embed;
         }
