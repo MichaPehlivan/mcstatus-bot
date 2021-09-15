@@ -11,6 +11,7 @@ import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
 
@@ -38,17 +39,9 @@ public class BotMain {
 
         gateway.on(MessageCreateEvent.class)
             .map(MessageCreateEvent::getMessage)
-            .filter(message -> message.getContent().equalsIgnoreCase(".online"))
+            .filter(message -> message.getContent().equalsIgnoreCase(".status"))
             .flatMap(message -> message.getChannel())
-            .flatMap(channel -> channel.createMessage(EmbedCreateSpec.builder()
-                .color(Color.RED)
-                .title("status of " + getData(2))
-                .addField("version: ", getData(3), true)
-                .addField("ping: ", getData(4) + " ms", true)
-                .addField("players online:", getData(0) + '/' + getData(1) + "\n\n"
-                     + getData(5).substring(2, 9) 
-                     + "\n" + getData(5).substring(13, 20), false)
-                .build()))
+            .flatMap(channel -> channel.createMessage(getEmbed(channel)))
             .subscribe();
     
         gateway.onDisconnect().block();
@@ -61,6 +54,29 @@ public class BotMain {
             return data;
         } catch (IOException e) {
             return null;
+        }
+    }
+
+    public static EmbedCreateSpec getEmbed(MessageChannel channel){
+        if(Boolean.parseBoolean(getData(0))){
+            EmbedCreateSpec embed = EmbedCreateSpec.builder()
+            .color(Color.RED)
+            .title("status of " + getData(3))
+            .addField("version: ", getData(4), true)
+            .addField("ping: ", getData(5) + " ms", true)
+            .addField("players online:", getData(1) + '/' + getData(2) + "\n\n"
+                 + getData(6).substring(2, 9) 
+                 + "\n" + getData(6).substring(13, 20), false)
+            .build();
+            return embed;
+        }
+        else{
+            EmbedCreateSpec embed = EmbedCreateSpec.builder()
+            .color(Color.RED)
+            .title("status of server")
+            .description("server is offline")
+            .build();
+            return embed;
         }
     }
 }

@@ -4,29 +4,35 @@ import socket
 socket = socket.socket()
 socket.connect(("localhost", 6000))
 
-server = MinecraftServer("ip of server", 25565)
+try:
+    server = MinecraftServer("ip of server", 25565)
+    status = server.status()
+    online = True
+except:
+    online = False
 
-#status = server.status()
+def getState():
+    return online
 
 def getOnline():
-    return 2
+    return status.players.online
 
 def getMax():
-    return 20
+    return status.players.max
 
 def getName():
-    return "server name"
+    return status.description
 
 def getVersion():
-    return "1.17"
+    return status.version.name
 
 def getPing():
-    return 5.87
+    return status.latency
 
 def getPlayers():
     return ["Player1", "Player2"]
 
-data = [getOnline(), getMax(), getName(), getVersion(), getPing(), getPlayers()]
+data = [getState(), getOnline(), getMax(), getName(), getVersion(), getPing(), getPlayers()]
 
 while(True):
     request = int.from_bytes(socket.recv(1024), "big")
