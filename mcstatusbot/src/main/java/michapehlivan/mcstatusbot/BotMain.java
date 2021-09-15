@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
@@ -39,7 +40,7 @@ public class BotMain {
 
         gateway.on(MessageCreateEvent.class)
             .map(MessageCreateEvent::getMessage)
-            .filter(message -> message.getContent().equalsIgnoreCase(".status"))
+            .filter(message -> message.getContent().equalsIgnoreCase("status"))
             .flatMap(message -> message.getChannel())
             .flatMap(channel -> channel.createMessage(getEmbed(channel)))
             .subscribe();
@@ -58,24 +59,27 @@ public class BotMain {
     }
 
     public static EmbedCreateSpec getEmbed(MessageChannel channel){
+        Random random = new Random();
+        Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
+        
         if(Boolean.parseBoolean(getData(0))){
             EmbedCreateSpec embed = EmbedCreateSpec.builder()
-            .color(Color.RED)
-            .title("status of " + getData(3))
-            .addField("version: ", getData(4), true)
-            .addField("ping: ", getData(5) + " ms", true)
-            .addField("players online:", getData(1) + '/' + getData(2) + "\n\n"
-                 + getData(6).substring(2, 9) 
-                 + "\n" + getData(6).substring(13, 20), false)
-            .build();
+                .color(color)
+                .title("status of " + getData(3))
+                .addField("version: ", getData(4), true)
+                .addField("ping: ", getData(5) + " ms", true)
+                .addField("players online:", getData(1) + '/' + getData(2) + "\n\n"
+                    + getData(6).substring(2, 9) 
+                    + "\n" + getData(6).substring(13, 20), false)
+                .build();
             return embed;
         }
         else{
             EmbedCreateSpec embed = EmbedCreateSpec.builder()
-            .color(Color.RED)
-            .title("status of server")
-            .description("server is offline")
-            .build();
+                .color(color)
+                .title("status of server")
+                .description("server is offline")
+                .build();
             return embed;
         }
     }
