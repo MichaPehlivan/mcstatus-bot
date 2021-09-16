@@ -5,7 +5,7 @@ socket = socket.socket()
 socket.connect(("localhost", 6000))
 
 try:
-    server = MinecraftServer("ip of server", 25565)
+    server = MinecraftServer("86.94.29.113", 25565)
     status = server.status()
     online = True
 except:
