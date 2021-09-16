@@ -30,7 +30,10 @@ def getPing():
     return status.latency
 
 def getPlayers():
-    return ["Player1", "Player2"]
+    names = []
+    for i in status.players.sample:
+        names.append(i.name)
+    return names
 
 data = [getState(), getOnline(), getMax(), getName(), getVersion(), getPing(), getPlayers()]
 
