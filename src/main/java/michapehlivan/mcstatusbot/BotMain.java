@@ -12,7 +12,6 @@ import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
 import michapehlivan.mcstatusbot.util.DataCode;
@@ -44,7 +43,7 @@ public class BotMain {
             .map(MessageCreateEvent::getMessage)
             .filter(message -> message.getContent().equalsIgnoreCase("status"))
             .flatMap(message -> message.getChannel())
-            .flatMap(channel -> channel.createMessage(getEmbed(channel)))
+            .flatMap(channel -> channel.createMessage(getEmbed()))
             .subscribe();
     
         gateway.onDisconnect().block();
@@ -60,7 +59,7 @@ public class BotMain {
         }
     }
 
-    public static EmbedCreateSpec getEmbed(MessageChannel channel){
+    public static EmbedCreateSpec getEmbed(){
         Random random = new Random();
         Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
         
