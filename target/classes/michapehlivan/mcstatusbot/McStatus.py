@@ -1,3 +1,4 @@
+from random import getstate
 from mcstatus import MinecraftServer
 import socket
 
@@ -5,7 +6,7 @@ socket = socket.socket()
 socket.connect(("localhost", 6000))
 
 try:
-    server = MinecraftServer("86.94.29.113", 25565)
+    server = MinecraftServer("ip of server", 25565)
     status = server.status()
     online = True
 except:
@@ -31,15 +32,17 @@ def getPing():
 
 def getPlayers():
     names = []
-    for i in status.players.sample:
-        names.append(i.name)
+    if(status.players.sample != None):
+        for i in status.players.sample:
+            names.append(i.name)
     return names
 
 data = [getState(), getOnline(), getMax(), getName(), getVersion(), getPing(), getPlayers()]
 
 while(True):
     request = int.from_bytes(socket.recv(1024), "big")
-    if(request == "0"):
+    print(request)
+    if(request == "-1"):
         socket.close()
         break
     else:
