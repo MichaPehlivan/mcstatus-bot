@@ -2,6 +2,7 @@ package michapehlivan.mcstatusbot.util;
 
 import java.awt.Color;
 import java.awt.Font;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -9,6 +10,9 @@ import java.io.PrintStream;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
+/* 
+    Class containing a JFrame used to redirect console output to
+*/
 public class Console extends JFrame{
     
     private JTextArea textarea;

@@ -1,10 +1,10 @@
-from random import getstate
 from mcstatus import MinecraftServer
 import socket
 
 socket = socket.socket()
 socket.connect(("localhost", 6000))
 
+#check if the server is online
 try:
     server = MinecraftServer("ip of server", 25565)
     status = server.status()
@@ -12,6 +12,7 @@ try:
 except:
     online = False
 
+#data getters
 def getState():
     return online
 
@@ -39,6 +40,7 @@ def getPlayers():
 
 data = [getState(), getOnline(), getMax(), getName(), getVersion(), getPing(), getPlayers()]
 
+#loop for recieving data requests and sending them
 while(True):
     request = int.from_bytes(socket.recv(1024), "big")
     print(request)

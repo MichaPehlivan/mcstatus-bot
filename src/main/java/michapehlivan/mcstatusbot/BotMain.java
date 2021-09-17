@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.net.ServerSocket;
 import java.net.Socket;
+
 import java.util.Random;
 
 import discord4j.core.DiscordClient;
@@ -14,6 +16,7 @@ import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
+
 import michapehlivan.mcstatusbot.util.Console;
 import michapehlivan.mcstatusbot.util.DataCode;
 import michapehlivan.mcstatusbot.util.PlayerList;
@@ -25,6 +28,9 @@ public class BotMain {
     static BufferedReader input;
     static DataOutputStream output;
 
+    /*
+        Main class containing the Discord4J code, as well as the server code
+    */
     public static void main(String[] args) throws IOException {
         Console console = new Console("Bot Console", 800, 500);
         System.setOut(console.getPrintStream());
@@ -33,7 +39,9 @@ public class BotMain {
         final GatewayDiscordClient gateway = discordclient.login().block();
 
         serversocket = new ServerSocket(6000);
+
         Runtime.getRuntime().exec("python mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\McStatus.py");
+        
         client = serversocket.accept();
         System.out.println("client connected");
 
@@ -51,8 +59,11 @@ public class BotMain {
             .subscribe();
     
         gateway.onDisconnect().block();
+        getData(DataCode.CLOSE);
+        serversocket.close();
     }
 
+    //function to request and retrieve data through a socket connection
     public static String getData(int index){
         try {
             output.writeInt(index);
@@ -63,6 +74,7 @@ public class BotMain {
         }
     }
 
+    //generate embed containing Minecraft server data
     public static EmbedCreateSpec getEmbed(){
         Random random = new Random();
         Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
