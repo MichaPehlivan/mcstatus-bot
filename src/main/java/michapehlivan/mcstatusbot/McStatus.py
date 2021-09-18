@@ -40,7 +40,7 @@ def getPlayers():
 
 data = [getState(), getOnline(), getMax(), getName(), getVersion(), getPing(), getPlayers()]
 
-#loop for recieving data requests and sending them
+#loop for recieving data requests and sending response
 while(True):
     request = int.from_bytes(socket.recv(1024), "big")
     print(request)

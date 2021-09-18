@@ -7,13 +7,14 @@ import java.io.InputStreamReader;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import java.util.Random;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.presence.ClientActivity;
+import discord4j.core.object.presence.ClientPresence;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
 
@@ -35,8 +36,8 @@ public class BotMain {
         Console console = new Console("Bot Console", 800, 500);
         System.setOut(console.getPrintStream());
 
-        final DiscordClient discordclient = DiscordClient.create("token");
-        final GatewayDiscordClient gateway = discordclient.login().block();
+        final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
+        gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-status"))).block();
 
         serversocket = new ServerSocket(6000);
 
@@ -53,7 +54,7 @@ public class BotMain {
 
         gateway.on(MessageCreateEvent.class)
             .map(MessageCreateEvent::getMessage)
-            .filter(message -> message.getContent().equalsIgnoreCase("status"))
+            .filter(message -> message.getContent().equalsIgnoreCase("-status"))
             .flatMap(message -> message.getChannel())
             .flatMap(channel -> channel.createMessage(getEmbed()))
             .subscribe();
