@@ -3,7 +3,8 @@ package michapehlivan.mcstatusbot.util;
 /* 
     Class for storing data request constants 
 */
-public class DataCode {
+public enum DataCode {
+    ;
     public static final int CLOSE = -1;
     public static final int STATE = 0;
     public static final int ONLINE = 1;

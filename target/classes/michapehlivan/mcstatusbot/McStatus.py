@@ -7,7 +7,6 @@ socket.connect(("localhost", 6000))
 #check if the server is online
 try:
     server = MinecraftServer("ip of server", 25565)
-    status = server.status()
     online = True
 except:
     online = False
@@ -38,14 +37,16 @@ def getPlayers():
             names.append(i.name)
     return names
 
-data = [getState(), getOnline(), getMax(), getName(), getVersion(), getPing(), getPlayers()]
+data = [getState, getOnline, getMax, getName, getVersion, getPing, getPlayers]
 
 #loop for recieving data requests and sending response
 while(True):
+    if(online):
+        status = server.status()
+
     request = int.from_bytes(socket.recv(1024), "big")
-    print(request)
     if(request == "-1"):
         socket.close()
         break
     else:
-        socket.sendall((str(data[request]) + "\n").encode())
+        socket.sendall((str(data[request]()) + "\n").encode())
