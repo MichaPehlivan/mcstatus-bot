@@ -8,20 +8,19 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import java.util.Random;
-
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.presence.ClientActivity;
 import discord4j.core.object.presence.ClientPresence;
-import discord4j.core.spec.EmbedCreateSpec;
-import discord4j.rest.util.Color;
 
+import michapehlivan.mcstatusbot.commands.CommandManager;
 import michapehlivan.mcstatusbot.util.Console;
 import michapehlivan.mcstatusbot.util.DataCode;
-import michapehlivan.mcstatusbot.util.PlayerList;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class BotMain {
     
@@ -47,6 +46,8 @@ public class BotMain {
         client = serversocket.accept();
         System.out.println("client connected");
 
+        CommandManager.init();
+
         input = new BufferedReader(new InputStreamReader(client.getInputStream()));
         output = new DataOutputStream(client.getOutputStream());
 
@@ -54,12 +55,13 @@ public class BotMain {
             .subscribe(event -> System.out.println("bot ready"));
 
         gateway.on(MessageCreateEvent.class)
-            .map(MessageCreateEvent::getMessage)
-            .filter(message -> message.getContent().equalsIgnoreCase("-status"))
-            .flatMap(message -> message.getChannel())
-            .flatMap(channel -> channel.createMessage(getEmbed()))
+            .flatMap(event -> Mono.just(event.getMessage().getContent())
+                .flatMap(content -> Flux.fromIterable(CommandManager.commands.entrySet())
+                    .filter(entry -> content.startsWith('-' + entry.getKey()))
+                    .flatMap(entry -> entry.getValue().execute(event))
+                    .next()))
             .subscribe();
-    
+        
         gateway.onDisconnect().block();
         getData(DataCode.CLOSE);
         serversocket.close();
@@ -73,33 +75,6 @@ public class BotMain {
             return data;
         } catch (IOException e) {
             return null;
-        }
-    }
-
-    //generate embed containing Minecraft server data
-    public static EmbedCreateSpec getEmbed(){
-        Random random = new Random();
-        Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
-        
-        if(Boolean.parseBoolean(getData(DataCode.STATE))){
-            EmbedCreateSpec embed = EmbedCreateSpec.builder()
-                .color(color)
-                .title("status of " + getData(DataCode.NAME))
-                .addField("version: ", getData(DataCode.VERSION), true)
-                .addField("ping: ", getData(DataCode.PING) + " ms", true)
-                .addField("players online:", getData(DataCode.ONLINE) + '/' + getData(DataCode.MAX) + "\n\n"
-                    + new PlayerList(getData(DataCode.PLAYERS)).getPlayers()
-                        .iterator().next().replace(",", "\n"), false)
-                .build();
-            return embed;
-        }
-        else{
-            EmbedCreateSpec embed = EmbedCreateSpec.builder()
-                .color(color)
-                .title("status of server")
-                .description("server is offline")
-                .build();
-            return embed;
         }
     }
 }
