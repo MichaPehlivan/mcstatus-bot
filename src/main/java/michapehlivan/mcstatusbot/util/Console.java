@@ -22,7 +22,7 @@ public class Console extends JFrame{
         setSize(width, height);
         setTitle(name);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
         setLocationRelativeTo(null);
 
         printer = new PrintStream(new OutputStream(){

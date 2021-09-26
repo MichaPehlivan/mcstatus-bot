@@ -1,5 +1,6 @@
 from mcstatus import MinecraftServer
 import socket
+import json
 
 socket = socket.socket()
 socket.connect(("localhost", 6000))

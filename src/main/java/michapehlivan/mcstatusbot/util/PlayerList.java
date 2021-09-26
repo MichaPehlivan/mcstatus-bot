@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class PlayerList {
     
-    private ArrayList<String> playerlist = new ArrayList<>();
+    private ArrayList<String> playerlist = new ArrayList<String>();
 
     //loop trough String and split into list
     public PlayerList(String list){
