@@ -36,13 +36,13 @@ public class BotMain {
         Console console = new Console("Bot Console", 800, 500);
         System.setOut(console.getPrintStream());
 
-        final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
+        final GatewayDiscordClient gateway = DiscordClient.create("ODgzNDIwNzc5NjAwMDUyMjY0.YTJrtw.azLAzhW1qY0tNtqQw9gRIgW9bFw").login().block();
         gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-status"))).block();
 
         serversocket = new ServerSocket(6000);
 
         Runtime.getRuntime().exec("python mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\McStatus.py");
-        
+
         client = serversocket.accept();
         System.out.println("client connected");
 
