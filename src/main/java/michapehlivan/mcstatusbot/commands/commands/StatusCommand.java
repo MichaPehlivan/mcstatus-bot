@@ -1,12 +1,13 @@
 package michapehlivan.mcstatusbot.commands.commands;
 
+import java.io.IOException;
 import java.util.Random;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
-import michapehlivan.mcstatusbot.BotMain;
 import michapehlivan.mcstatusbot.commands.Command;
+import michapehlivan.mcstatusbot.mcstatus.Request;
 import michapehlivan.mcstatusbot.util.DataCode;
 import michapehlivan.mcstatusbot.util.PlayerList;
 import reactor.core.publisher.Mono;
@@ -16,22 +17,30 @@ public class StatusCommand implements Command{
     @Override
     public Mono<Void> execute(MessageCreateEvent event) {
         return event.getMessage().getChannel()
-            .flatMap(channel -> channel.createMessage(getEmbed())).then();
+            .flatMap(channel -> {
+                try {
+                    return channel.createMessage(getEmbed());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }).then();
     }
 
     //generate embed containing Minecraft server data
-    public static EmbedCreateSpec getEmbed(){
+    public static EmbedCreateSpec getEmbed() throws IOException{
         Random random = new Random();
         Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
         
-        if(Boolean.parseBoolean(BotMain.getData(DataCode.STATE))){
+        if(Boolean.parseBoolean(Request.request(DataCode.STATE))){
             EmbedCreateSpec embed = EmbedCreateSpec.builder()
                 .color(color)
-                .title("status of " + BotMain.getData(DataCode.NAME))
-                .addField("version: ", BotMain.getData(DataCode.VERSION), true)
-                .addField("ping: ", BotMain.getData(DataCode.PING) + " ms", true)
-                .addField("players online:", BotMain.getData(DataCode.ONLINE) + '/' + BotMain.getData(DataCode.MAX) + "\n\n"
-                    + new PlayerList(BotMain.getData(DataCode.PLAYERS)).getPlayers()
+                .title("status of " + Request.request(DataCode.NAME))
+                .footer("hosted by " + Request.request(DataCode.HOST), null)
+                .addField("version: ", Request.request(DataCode.VERSION), true)
+                .addField("ping: ", Request.request(DataCode.PING) + " ms", true)
+                .addField("players online:", Request.request(DataCode.ONLINE) + '/' + Request.request(DataCode.MAX) + "\n\n"
+                    + new PlayerList(Request.request(DataCode.PLAYERS)).getPlayers()
                         .iterator().next().replace(",", "\n"), false)
                 .build();
             return embed;
