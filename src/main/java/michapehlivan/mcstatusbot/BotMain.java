@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
     Main class containing the Discord4J code, as well as the server code
 */
 public class BotMain {
+
     public static void main(String[] args) throws IOException{
         Console console = new Console("Bot Console", 800, 500);
         System.setOut(console.getPrintStream());
