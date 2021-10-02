@@ -38,7 +38,7 @@ public class StatusCommand implements Command{
             EmbedCreateSpec embed = EmbedCreateSpec.builder()
                 .color(color)
                 .title("status of " + Request.request(DataCode.NAME, guildId))
-                .footer("hosted by " + Request.request(DataCode.HOST, guildId), null)
+                .footer("hosted by " + Request.request(DataCode.HOST, guildId).trim(), null)
                 .addField("version: ", Request.request(DataCode.VERSION, guildId), true)
                 .addField("ping: ", Request.request(DataCode.PING, guildId) + " ms", true)
                 .addField("players online:", Request.request(DataCode.ONLINE, guildId) + '/' + Request.request(DataCode.MAX, guildId) + "\n\n"

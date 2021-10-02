@@ -21,7 +21,7 @@ class HttpHandler(BaseHTTPRequestHandler):
 
 class Reader:
 
-    path = "mcstatusbot\src\main\java\michapehlivan\mcstatusbot\serverdata\Servers.json"
+    path = "mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\serverdata\\Servers.json"
 
     def getServers(guild):
         file = json.load(open(Reader.path))

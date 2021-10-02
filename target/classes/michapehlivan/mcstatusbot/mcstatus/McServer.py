@@ -3,13 +3,11 @@ from mcstatus import MinecraftServer
 class McServer:
 
     def __init__(self, host, ip) -> None:
-        global serverhost, serverip, server, status, online
-
         try:
             server = MinecraftServer(ip, 25565)
+            global serverhost, status, online
             status = server.status()
             serverhost = host
-            serverip = ip
             online = True
         except:
             online = False
