@@ -8,8 +8,8 @@ import java.net.URLConnection;
 
 public class Request {
 
-    public static String request(int request) throws IOException{
-        URL url = new URL("http://localhost:8000/" + Integer.toString(request));
+    public static String request(int request, Long guild) throws IOException{
+        URL url = new URL("http://localhost:8000/" + Integer.toString(request) + Long.toString(guild));
         URLConnection con = url.openConnection();
         BufferedReader in = new BufferedReader(
         new InputStreamReader(con.getInputStream()));

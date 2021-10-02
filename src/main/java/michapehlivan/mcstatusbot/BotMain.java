@@ -11,6 +11,7 @@ import discord4j.core.object.presence.ClientPresence;
 
 import michapehlivan.mcstatusbot.commands.CommandManager;
 import michapehlivan.mcstatusbot.util.Console;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,10 +26,6 @@ public class BotMain {
 
         final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
         gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-status"))).block();
-    
-        ProcessBuilder builder = new ProcessBuilder("python", "mcstatusbot/src/main/java/michapehlivan/mcstatusbot/mcstatus/HttpHandler.py");
-        Process p = builder.start();
-        System.out.println("server online");
 
         CommandManager.init();
 
@@ -44,6 +41,5 @@ public class BotMain {
             .subscribe();
         
         gateway.onDisconnect().block();
-        p.destroy();
     }
 }

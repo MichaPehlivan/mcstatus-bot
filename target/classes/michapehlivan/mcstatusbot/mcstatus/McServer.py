@@ -14,13 +14,6 @@ class McServer:
         except:
             online = False
 
-    def updateStatus():
-        try:
-            status = server.status()
-            online = True
-        except:
-            online = False
-
     def getState():
         return online
 
@@ -47,6 +40,9 @@ class McServer:
         if(status.players.sample != None):
             for i in status.players.sample:
                 names.append(i.name)
-        return names
+        if(status.players.online < 10):
+            return names
+        else:
+            return []
 
-    data = [updateStatus, getState, getHost, getOnline, getMax, getName, getVersion, getPing, getPlayers]
+    data = [getState, getHost, getOnline, getMax, getName, getVersion, getPing, getPlayers]

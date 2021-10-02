@@ -5,13 +5,12 @@ package michapehlivan.mcstatusbot.util;
 */
 public enum DataCode {
     ;
-    public static final int UPDATE = 0;
-    public static final int STATE = 1;
-    public static final int HOST = 2;
-    public static final int ONLINE = 3;
-    public static final int MAX = 4;
-    public static final int NAME = 5;
-    public static final int VERSION = 6;
-    public static final int PING = 7;
-    public static final int PLAYERS = 8;
+    public static final int STATE = 0;
+    public static final int HOST = 1;
+    public static final int ONLINE = 2;
+    public static final int MAX = 3;
+    public static final int NAME = 4;
+    public static final int VERSION = 5;
+    public static final int PING = 6;
+    public static final int PLAYERS = 7;
 }

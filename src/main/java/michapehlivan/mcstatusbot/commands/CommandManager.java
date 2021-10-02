@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import michapehlivan.mcstatusbot.commands.commands.ServerSetCommand;
 import michapehlivan.mcstatusbot.commands.commands.StatusCommand;
 
 public class CommandManager {
@@ -12,6 +13,7 @@ public class CommandManager {
 
     public static void init() throws IOException{
         commands.put("status", new StatusCommand());
+        commands.put("set", new ServerSetCommand());
     }
 
 }
