@@ -27,7 +27,7 @@ public class ServerSetCommand implements Command{
         return event.getMessage()
             .getChannel()
             .block()
-            .createMessage(writer.setServer(new ServerObject(event.getGuildId().get().asLong(), data[0], data[1])))
+            .createMessage(writer.setServer(new ServerObject(data[0], data[1])))
             .then();
     }
     

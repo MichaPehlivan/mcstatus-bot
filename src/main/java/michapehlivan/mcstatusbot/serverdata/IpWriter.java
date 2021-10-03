@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -29,25 +28,28 @@ public class IpWriter {
     }
 
     public String setServer(ServerObject server){
-        JsonArray serverdata = new JsonArray();
-        serverdata.add(server.getHost());
-        serverdata.add(server.getIp());
+        String host = server.getHost();
+        String ip = server.getIp();
 
-        if(file.has(Long.toString(server.getGuildId()))){
-            file.remove(Long.toString(server.getGuildId()));
+        if(file.has("host")){
+            file.remove("host");
         }
-        file.add(Long.toString(server.getGuildId()), serverdata);
+        if(file.has("ip")){
+            file.remove("ip");
+        }
+        file.addProperty("host", host);
+        file.addProperty("ip", ip);
 
+        FileWriter writer;
         try {
-            FileWriter writer;
             writer = new FileWriter(path);
             gson.toJson(file, writer);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error while setting server, please try again";
+            return "error while adding server, please try again";
         }
         
-        return "Server succesfully set";
+        return "server sucesfully added";
     }
 }
