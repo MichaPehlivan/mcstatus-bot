@@ -37,8 +37,9 @@ public class StatusCommand implements Command{
             if(Boolean.parseBoolean(Request.request(DataCode.STATE))){
                 EmbedCreateSpec embed = EmbedCreateSpec.builder()
                     .color(color)
-                    .title("status of " + Request.request(DataCode.NAME))
+                    .title("status of server")
                     .footer("hosted by " + Request.request(DataCode.HOST).trim(), null)
+                    .addField("description: ", Request.request(DataCode.NAME), false)
                     .addField("version: ", Request.request(DataCode.VERSION), true)
                     .addField("ping: ", Request.request(DataCode.PING) + " ms", true)
                     .addField("players online:", Request.request(DataCode.ONLINE) + '/' + Request.request(DataCode.MAX) + "\n\n"

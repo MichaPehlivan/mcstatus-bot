@@ -3,11 +3,14 @@ package michapehlivan.mcstatusbot.serverdata;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import michapehlivan.mcstatusbot.mcstatus.Request;
 
 public class IpWriter {
 
@@ -31,25 +34,24 @@ public class IpWriter {
         String host = server.getHost();
         String ip = server.getIp();
 
-        if(file.has("host")){
-            file.remove("host");
+        if(file.has("serverhost")){
+            file.remove("serverhost");
         }
-        if(file.has("ip")){
-            file.remove("ip");
+        if(file.has("serverip")){
+            file.remove("serverip");
         }
-        file.addProperty("host", host);
-        file.addProperty("ip", ip);
+        file.addProperty("serverhost", host);
+        file.addProperty("serverip", ip);
 
         FileWriter writer;
         try {
             writer = new FileWriter(path);
             gson.toJson(file, writer);
             writer.close();
-        } catch (IOException e) {
+            return Request.post(server);
+        } catch (IOException | URISyntaxException | InterruptedException e) {
             e.printStackTrace();
             return "error while adding server, please try again";
         }
-        
-        return "server sucesfully added";
     }
 }

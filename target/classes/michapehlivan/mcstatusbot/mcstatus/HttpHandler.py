@@ -2,17 +2,38 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import McServer as mc
 import json
 
+
+currentserver = mc.McServer("host", "ip")
 class HttpHandler(BaseHTTPRequestHandler):
+
+    def on_Start():
+        global currentserver
+        try:
+            data = Reader.getServer()
+            currentserver = mc.McServer(data[0], data[1])
+        except:
+            pass
 
     def do_GET(self):
         self.send_response(200)
         self.send_header('Content-type','text/html')
         self.end_headers()
         code = self.headers.get("code")
-        serverArray = Reader.getServer()
-        mcserver = mc.McServer(serverArray[0], serverArray[1])
-        message = self.mcserver.data[int(code)]()
+        message = currentserver.data[int(code)]()
         self.wfile.write(bytes(str(message), "utf8"))
+
+    def do_POST(self):
+        self.send_response(200)
+        self.send_header('Content-type','text/html')
+        self.end_headers()
+
+        host = self.headers.get("serverhost")
+        ip = self.headers.get("serverip")
+        currentserver = mc.McServer(host, ip)
+
+        message = "server successfully set"
+        self.wfile.write(bytes(message, "utf8"))
+
 
 class Reader:
 
@@ -20,9 +41,10 @@ class Reader:
 
     def getServer():
         file = json.load(open(Reader.path))
-        host = file["host"]
-        ip = file["ip"]
+        host = file["serverhost"]
+        ip = file["serverip"]
         return [host, ip]
 
 with HTTPServer(('', 8000), HttpHandler) as server:
+    HttpHandler.on_Start()
     server.serve_forever()
