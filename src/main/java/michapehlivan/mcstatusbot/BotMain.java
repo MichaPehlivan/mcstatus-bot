@@ -27,14 +27,14 @@ public class BotMain {
         Console console = new Console("Bot Console", 800, 500);
         System.setOut(console.getPrintStream());
 
-        //creates the discord client and sets the presence
-        final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
-        gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-help"))).block();
-
         //starts the python http server used for fetching server status
         ProcessBuilder builder = new ProcessBuilder("python", "mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\mcstatus\\HttpHandler.py");
         p = builder.start();
         System.out.println("server online");
+
+        //creates the discord client and sets the presence
+        final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
+        gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-help"))).block();
 
         CommandManager.init();
 
