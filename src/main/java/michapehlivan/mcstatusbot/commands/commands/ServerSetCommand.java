@@ -28,11 +28,20 @@ public class ServerSetCommand implements Command{
     public Mono<Void> execute(MessageCreateEvent event) {
         String command = event.getMessage().getContent().replace("-set", "");
         String[] data = command.split(", ");
-        return event.getMessage()
+        
+        try{
+            return event.getMessage()
             .getChannel()
             .block()
             .createMessage(writer.setServer(new ServerObject(data[0], data[1])))
             .then();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return event.getMessage()
+                .getChannel()
+                .block()
+                .createMessage("invalid command syntax, please follow the form: `-set hostname, serverip`")
+                .then();
+        }
     }
     
 }
