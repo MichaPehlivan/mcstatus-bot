@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import McServer as mc
 import json
+import os
 
 
 currentserver = mc.McServer("host", "ip")

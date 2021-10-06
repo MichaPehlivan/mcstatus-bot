@@ -20,12 +20,18 @@ import reactor.core.publisher.Mono;
 */
 public class BotMain {
 
+    public static Process p;
+
     public static void main(String[] args) throws IOException{
         Console console = new Console("Bot Console", 800, 500);
         System.setOut(console.getPrintStream());
 
         final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
         gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-status"))).block();
+
+        ProcessBuilder builder = new ProcessBuilder("python", "mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\mcstatus\\HttpHandler.py");
+        p = builder.start();
+        System.out.println("server online");
 
         CommandManager.init();
 

@@ -47,4 +47,8 @@ public class Console extends JFrame{
     public PrintStream getPrintStream(){
         return printer;
     }
+
+    public void clear(){
+        textarea.removeAll();
+    }
 }

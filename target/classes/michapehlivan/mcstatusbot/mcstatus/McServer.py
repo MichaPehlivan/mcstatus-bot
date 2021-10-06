@@ -25,7 +25,7 @@ class McServer:
         return status.players.max
 
     def getName():
-        return status.description["text"]
+        return status.description
 
     def getVersion():
         return status.version.name
