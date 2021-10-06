@@ -38,6 +38,10 @@ class HttpHandler(BaseHTTPRequestHandler):
         message = "server successfully set"
         self.wfile.write(bytes(message, "utf8"))
 
+    #override log message
+    def log_message(self):
+        return
+
 #Class for reading server data from json
 class Reader:
 
