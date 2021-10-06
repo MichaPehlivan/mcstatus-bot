@@ -8,13 +8,17 @@ import michapehlivan.mcstatusbot.serverdata.IpWriter;
 import michapehlivan.mcstatusbot.serverdata.ServerObject;
 import reactor.core.publisher.Mono;
 
+/**
+ * Class containing the -set command
+ * @author Micha Pehlivan
+ */
 public class ServerSetCommand implements Command{
 
     private static IpWriter writer;
 
     public ServerSetCommand(){
         try {
-            writer = new IpWriter();
+            writer = new IpWriter(); //creates a new IpWriter on startup
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,6 +8,10 @@ import discord4j.rest.util.Color;
 import michapehlivan.mcstatusbot.commands.Command;
 import reactor.core.publisher.Mono;
 
+/**
+ * Class containing the -help command
+ * @author Micha Pehlivan
+ */
 public class HelpCommand implements Command{
 
     @Override
@@ -19,9 +23,14 @@ public class HelpCommand implements Command{
             .then();
     }
 
+    /**
+     * Create embed containing info on all commands
+     * @author Micha Pehlivan
+     * @return embed containing a list of commands
+     */
     public EmbedCreateSpec getHelpEmbed(){
         Random random = new Random();
-        Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
+        Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat()); //generates random color for embed
 
         EmbedCreateSpec embed = EmbedCreateSpec.builder()
             .color(color)

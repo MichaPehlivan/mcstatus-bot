@@ -11,8 +11,21 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import michapehlivan.mcstatusbot.serverdata.ServerObject;
 
+/**
+ * Class for making Http requests to python
+ * @author Micha Pehlivan
+ */
 public class Request {
 
+    /**
+     * Make a get request to python
+     * @param requestcode the index of the data to be requested
+     * @author Micha Pehlivan
+     * @return the response from the server
+     * @throws URISyntaxException
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public static String request(int requestcode) throws URISyntaxException, IOException, InterruptedException{
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -25,6 +38,15 @@ public class Request {
         return response.body();
     }
 
+    /**
+     * Make a post request to python
+     * @param server the Minecraft server to be set
+     * @author Micha Pehlivan
+     * @return the response from the server
+     * @throws URISyntaxException
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public static String post(ServerObject server) throws URISyntaxException, IOException, InterruptedException{
         String host = server.getHost();
         String ip = server.getIp();

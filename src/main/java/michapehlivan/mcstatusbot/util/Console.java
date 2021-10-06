@@ -10,14 +10,22 @@ import java.io.PrintStream;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
-/* 
+/**
     Class containing a JFrame used to redirect console output to
+    @author Micha Pehlivan
 */
 public class Console extends JFrame{
     
     private JTextArea textarea;
     private PrintStream printer;
 
+    /**
+     * Constructor of Console class
+     * @param name
+     * @param width
+     * @param height
+     * @author Micha Pehlivan
+     */
     public Console(String name, int width, int height){
         setSize(width, height);
         setTitle(name);
@@ -44,11 +52,8 @@ public class Console extends JFrame{
         setVisible(true);
     }
 
+    //returns the printstream
     public PrintStream getPrintStream(){
         return printer;
-    }
-
-    public void clear(){
-        textarea.removeAll();
     }
 }

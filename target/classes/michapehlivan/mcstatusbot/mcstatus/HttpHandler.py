@@ -7,6 +7,7 @@ import os
 currentserver = mc.McServer("host", "ip")
 class HttpHandler(BaseHTTPRequestHandler):
 
+    #create currentserver variable on startup
     def on_Start():
         global currentserver
         try:
@@ -15,6 +16,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         except:
             pass
 
+    #handle get request
     def do_GET(self):
         self.send_response(200)
         self.send_header('Content-type','text/html')
@@ -23,6 +25,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         message = currentserver.data[int(code)]()
         self.wfile.write(bytes(str(message), "utf8"))
 
+    #handle post request
     def do_POST(self):
         self.send_response(200)
         self.send_header('Content-type','text/html')
@@ -35,7 +38,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         message = "server successfully set"
         self.wfile.write(bytes(message, "utf8"))
 
-
+#Class for reading server data from json
 class Reader:
 
     path = "mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\serverdata\\Servers.json"
@@ -46,6 +49,7 @@ class Reader:
         ip = file["serverip"]
         return [host, ip]
 
+#server setup and handle requests
 with HTTPServer(('', 8000), HttpHandler) as server:
     HttpHandler.on_Start()
     server.serve_forever()

@@ -12,12 +12,21 @@ import com.google.gson.JsonParser;
 
 import michapehlivan.mcstatusbot.mcstatus.Request;
 
+/**
+ * Class for writing host-ip pairs to Servers.json
+ * @author Micha Pehlivan
+ */
 public class IpWriter {
 
     private static final String path = "mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\serverdata\\Servers.json";
     private static final Gson gson = new Gson();
     private static JsonObject file = new JsonObject();
 
+    /**
+     * Constructor of IpWriter
+     * @author Micha Pehlivan
+     * @throws IOException
+     */
     public IpWriter() throws IOException{
         JsonParser parser = new JsonParser();
         FileReader reader = new FileReader(path);
@@ -30,6 +39,12 @@ public class IpWriter {
         writer.close();
     }
 
+    /**
+     * Writes the server to Servers.json
+     * @param server the ServerObject to be added to Servers.json
+     * @author Micha Pehlivan
+     * @return response from server
+     */
     public String setServer(ServerObject server){
         String host = server.getHost();
         String ip = server.getIp();

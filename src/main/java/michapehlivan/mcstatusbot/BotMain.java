@@ -15,8 +15,9 @@ import michapehlivan.mcstatusbot.util.Console;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/*
+/**
     Main class containing the Discord4J code, as well as the server code
+    @author Micha Pehlivan
 */
 public class BotMain {
 
@@ -26,9 +27,11 @@ public class BotMain {
         Console console = new Console("Bot Console", 800, 500);
         System.setOut(console.getPrintStream());
 
+        //creates the discord client and sets the presence
         final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
         gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-help"))).block();
 
+        //starts the python http server used for fetching server status
         ProcessBuilder builder = new ProcessBuilder("python", "mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\mcstatus\\HttpHandler.py");
         p = builder.start();
         System.out.println("server online");
@@ -38,6 +41,7 @@ public class BotMain {
         gateway.on(ReadyEvent.class)
             .subscribe(event -> System.out.println("bot ready"));
 
+        //check if message is a command, and execute if it is
         gateway.on(MessageCreateEvent.class)
             .flatMap(event -> Mono.just(event.getMessage().getContent())
                 .flatMap(content -> Flux.fromIterable(CommandManager.commands.entrySet())
@@ -47,5 +51,6 @@ public class BotMain {
             .subscribe();
         
         gateway.onDisconnect().block();
+        p.destroy();
     }
 }

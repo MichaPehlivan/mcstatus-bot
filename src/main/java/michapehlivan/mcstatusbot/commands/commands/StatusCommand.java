@@ -13,6 +13,10 @@ import michapehlivan.mcstatusbot.util.DataCode;
 import michapehlivan.mcstatusbot.util.PlayerList;
 import reactor.core.publisher.Mono;
 
+/**
+ * Class containing the -status command
+ * @author Micha Pehlivan
+ */
 public class StatusCommand implements Command{
 
     @Override
@@ -28,18 +32,23 @@ public class StatusCommand implements Command{
             }).then();
     }
 
-    //generate embed containing Minecraft server data
+    /**
+     * Generates an embed containing thes status of the currently registered Minecraft server
+     * @author Micha Pehlivan
+     * @return Embed containing server status
+     * @throws IOException
+     */
     public static EmbedCreateSpec getEmbed() throws IOException{
         Random random = new Random();
-        Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat());
+        Color color = Color.of(random.nextFloat(), random.nextFloat(), random.nextFloat()); //generates random color for embed
         
         try {
-            if(Boolean.parseBoolean(Request.request(DataCode.STATE))){
+            if(Boolean.parseBoolean(Request.request(DataCode.STATE))){ //check if server is online
                 EmbedCreateSpec embed = EmbedCreateSpec.builder()
                     .color(color)
                     .title("status of server")
                     .footer("hosted by " + Request.request(DataCode.HOST).trim(), null)
-                    .addField("description: ", Request.request(DataCode.NAME), false)
+                    .addField("description: ", Request.request(DataCode.DESCRIPTION), false)
                     .addField("version: ", Request.request(DataCode.VERSION), true)
                     .addField("ping: ", Request.request(DataCode.PING) + " ms", true)
                     .addField("players online:", Request.request(DataCode.ONLINE) + '/' + Request.request(DataCode.MAX) + "\n\n"
