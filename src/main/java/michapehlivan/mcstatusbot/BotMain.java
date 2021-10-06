@@ -27,7 +27,7 @@ public class BotMain {
         System.setOut(console.getPrintStream());
 
         final GatewayDiscordClient gateway = DiscordClient.create("token").login().block();
-        gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-status"))).block();
+        gateway.updatePresence(ClientPresence.online(ClientActivity.playing("-help"))).block();
 
         ProcessBuilder builder = new ProcessBuilder("python", "mcstatusbot\\src\\main\\java\\michapehlivan\\mcstatusbot\\mcstatus\\HttpHandler.py");
         p = builder.start();
