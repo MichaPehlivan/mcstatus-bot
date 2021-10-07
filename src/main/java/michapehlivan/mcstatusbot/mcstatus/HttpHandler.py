@@ -4,8 +4,6 @@ import McServer as mc
 import json
 import os
 
-
-currentserver = mc.McServer("host", "ip")
 class HttpHandler(BaseHTTPRequestHandler):
 
     #create currentserver variable on startup
@@ -15,7 +13,7 @@ class HttpHandler(BaseHTTPRequestHandler):
             data = Reader.getServer()
             currentserver = mc.McServer(data[0], data[1])
         except:
-            pass
+            currentserver = mc.McServer("host", "ip")
 
     #handle get request
     def do_GET(self):
