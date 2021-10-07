@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import sys
 import McServer as mc
 import json
 import os
@@ -38,9 +39,8 @@ class HttpHandler(BaseHTTPRequestHandler):
         message = "server successfully set"
         self.wfile.write(bytes(message, "utf8"))
 
-    #override log message
-    def log_message(self):
-        return
+    def log_message(self, format: str, *args: any) -> None:
+        return 
 
 #Class for reading server data from json
 class Reader:
